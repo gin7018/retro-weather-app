@@ -27,12 +27,12 @@ class HourForecastWidgetState extends State<HourForecastWidget> {
               children: [
                 Text("${widget.forecasts[index].date.hour}"),
                 const Icon(Icons.cloud),
-                Text("${widget.forecasts[index].temperature}"),
+                Text("${widget.forecasts[index].temperature.round()}"),
               ],
             );
           },
           separatorBuilder: ((context, index) => const SizedBox(
-                width: 20,
+                width: 40,
               )),
         ));
   }

@@ -15,10 +15,12 @@ class DaysForeCastWidgetState extends State<DaysForeCastWidget> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+        padding: const EdgeInsets.only(bottom: 10),
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) => Container(
-              margin: const EdgeInsets.symmetric(vertical: 2.0),
+              margin: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

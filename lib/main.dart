@@ -15,7 +15,14 @@ class WeatherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Retro Gaming'),
+      theme: ThemeData(
+          fontFamily: 'Retro Gaming',
+          textTheme: const TextTheme().copyWith(
+            bodySmall: const TextStyle(color: Colors.white),
+            bodyMedium: const TextStyle(color: Colors.white),
+            bodyLarge: const TextStyle(color: Colors.white),
+          ),
+          iconTheme: const IconThemeData(color: Colors.white)),
       home: const WeatherWidget(),
     );
   }
@@ -34,14 +41,6 @@ class WeatherWidgetState extends State<WeatherWidget> {
   @override
   void initState() {
     super.initState();
-    var dt = DateTime.now();
-    List<ForeCast> forecasts = [];
-    for (int i = 0; i < 24; i++) {
-      dt = dt.add(const Duration(hours: 1));
-      forecasts.add(ForeCast(dt, 78, "rain", "rain", null, null));
-    }
-    status =
-        WeatherStatus("KIGALI", "Sunny with Clouds", 80, 74, 79, 75, forecasts);
   }
 
   @override
@@ -59,53 +58,147 @@ class WeatherWidgetState extends State<WeatherWidget> {
       d10Forecasts.add(ForeCast(dt, 78, "rain", "rain", 75, 80));
     }
     status = WeatherStatus(
-        "KIGALI", "Sunny with Clouds", 80, 74, 79, 75, hourForecasts);
+        "KIGALI", "SUNNY WITH CLOUDS", 80, 74, 79, 75, hourForecasts);
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 100, left: 100, right: 100),
-              child: Column(
-                children: [
-                  const Text(
-                    "My Location",
-                    style: TextStyle(fontSize: 20),
-                  ),
-                  Text(
-                    status.cityLocation,
-                    style: const TextStyle(fontSize: 15),
-                  ),
-                  Text(
-                    "${status.currentTemperature.round()}",
-                    style: const TextStyle(fontSize: 70),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(status.weatherDescription),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 50.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Container(
+          color: Colors.blue.shade200,
+          child: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.only(
+                    top: 80, left: 100, right: 100, bottom: 80),
+                child: Column(
+                  children: [
+                    const Text(
+                      "MY LOCATION",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Text(
+                      status.cityLocation,
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.only(top: 10, left: 100, right: 100),
+                child: Column(
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      clipBehavior: Clip.none,
                       children: [
-                        Text("L: ${status.lowestTemperature.round()}"),
-                        const Spacer(),
-                        Text("H: ${status.highestTemperature.round()}"),
+                        Positioned(
+                            left: 50,
+                            bottom: 50,
+                            child: Image.asset(
+                              "assets/sunny_clouds.png",
+                              width: 200,
+                              height: 200,
+                            )),
+                        Text(
+                          "${status.currentTemperature.round()}",
+                          style: const TextStyle(fontSize: 100),
+                        )
                       ],
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 8.0),
+                      child: Text(status.weatherDescription),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 20.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("L: ${status.lowestTemperature.round()}"),
+                          const Spacer(),
+                          Text("H: ${status.highestTemperature.round()}"),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            // the 24 hour forecasts widget
-            HourForecastWidget(
-              forecasts: status.h24Forecast,
-            ),
-            DaysForeCastWidget(d10Forecasts: d10Forecasts)
-          ],
+              // the 24 hour forecasts widget
+              Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                decoration: BoxDecoration(
+                    color: Colors.blue.shade200,
+                    border: Border.all(
+                        color: Colors.blue.shade900,
+                        width: 5,
+                        strokeAlign: BorderSide.strokeAlignCenter)),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 8.0),
+                          child: Icon(Icons.access_time_filled_sharp),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            "HOURLY FORECAST",
+                          ),
+                        ),
+                      ],
+                    ),
+                    Container(
+                      color: Colors.blue.shade300,
+                      padding:
+                          const EdgeInsets.only(top: 10, left: 10, right: 10),
+                      child: HourForecastWidget(
+                        forecasts: status.h24Forecast,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: Colors.blue.shade200,
+                      border: Border.all(
+                          color: Colors.blue.shade900,
+                          width: 5,
+                          strokeAlign: BorderSide.strokeAlignCenter)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 8),
+                            child: Icon(Icons.calendar_today_sharp),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 8),
+                            child: Text(
+                              "10 DAY FORECAST",
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                          color: Colors.blue.shade300,
+                          padding: const EdgeInsets.only(
+                              top: 10, left: 10, right: 10),
+                          child:
+                              DaysForeCastWidget(d10Forecasts: d10Forecasts)),
+                    ],
+                  ))
+            ],
+          ),
         ),
       ),
     );
