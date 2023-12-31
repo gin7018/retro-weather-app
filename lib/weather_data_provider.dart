@@ -8,20 +8,19 @@ import 'dart:developer' as developer;
 class ForeCast {
   DateTime date;
   double temperature;
+  double? low;
+  double? high;
 
   String condition;
   String icon;
 
-  ForeCast(this.date, this.temperature, this.condition, this.icon);
+  ForeCast(this.date, this.temperature, this.condition, this.icon, this.low,
+      this.high);
 
   factory ForeCast.fromJson(fc) {
     var dt = DateTime.parse(fc["datetime"]);
-    developer.log(
-      "this is the date: $dt",
-      error: jsonEncode("bro what in the word"),
-    );
 
-    return ForeCast(dt, fc["temp"], fc["conditions"], fc["icon"]);
+    return ForeCast(dt, fc["temp"], fc["conditions"], fc["icon"], null, null);
   }
 }
 

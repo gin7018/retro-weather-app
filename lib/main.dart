@@ -1,6 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:weather_app_ui/days_forecast_widget.dart';
 import 'package:weather_app_ui/hour_forecast_widget.dart';
 import 'package:weather_app_ui/weather_data_provider.dart';
 
@@ -37,7 +38,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
     List<ForeCast> forecasts = [];
     for (int i = 0; i < 24; i++) {
       dt = dt.add(const Duration(hours: 1));
-      forecasts.add(ForeCast(dt, 78, "rain", "rain"));
+      forecasts.add(ForeCast(dt, 78, "rain", "rain", null, null));
     }
     status =
         WeatherStatus("KIGALI", "Sunny with Clouds", 80, 74, 79, 75, forecasts);
@@ -49,14 +50,20 @@ class WeatherWidgetState extends State<WeatherWidget> {
     List<ForeCast> hourForecasts = [];
     for (int i = 0; i < 24; i++) {
       dt = dt.add(const Duration(hours: 1));
-      hourForecasts.add(ForeCast(dt, 78, "rain", "rain"));
+      hourForecasts.add(ForeCast(dt, 78, "rain", "rain", null, null));
+    }
+
+    List<ForeCast> d10Forecasts = [];
+    for (int i = 0; i < 10; i++) {
+      dt = dt.add(const Duration(days: 1));
+      d10Forecasts.add(ForeCast(dt, 78, "rain", "rain", 75, 80));
     }
     status = WeatherStatus(
         "KIGALI", "Sunny with Clouds", 80, 74, 79, 75, hourForecasts);
 
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Padding(
@@ -80,7 +87,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
                     child: Text(status.weatherDescription),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(bottom: 60.0),
+                    padding: const EdgeInsets.only(bottom: 50.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -97,6 +104,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
             HourForecastWidget(
               forecasts: status.h24Forecast,
             ),
+            DaysForeCastWidget(d10Forecasts: d10Forecasts)
           ],
         ),
       ),

@@ -16,23 +16,24 @@ class HourForecastWidget extends StatefulWidget {
 class HourForecastWidgetState extends State<HourForecastWidget> {
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return SizedBox(
+        height: 80,
         child: ListView.separated(
-      scrollDirection: Axis.horizontal,
-      shrinkWrap: true,
-      itemCount: widget.forecasts.length,
-      itemBuilder: (context, index) {
-        return Column(
-          children: [
-            Text("${widget.forecasts[index].date.hour}"),
-            const Icon(Icons.cloud),
-            Text("${widget.forecasts[index].temperature}"),
-          ],
-        );
-      },
-      separatorBuilder: ((context, index) => const SizedBox(
-            width: 20,
-          )),
-    ));
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemCount: widget.forecasts.length,
+          itemBuilder: (context, index) {
+            return Column(
+              children: [
+                Text("${widget.forecasts[index].date.hour}"),
+                const Icon(Icons.cloud),
+                Text("${widget.forecasts[index].temperature}"),
+              ],
+            );
+          },
+          separatorBuilder: ((context, index) => const SizedBox(
+                width: 20,
+              )),
+        ));
   }
 }
