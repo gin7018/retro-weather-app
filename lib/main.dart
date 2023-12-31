@@ -58,7 +58,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
       d10Forecasts.add(ForeCast(dt, 78, "rain", "rain", 75, 80));
     }
     status = WeatherStatus(
-        "KIGALI", "SUNNY WITH CLOUDS", 80, 74, 79, 75, hourForecasts);
+        "KIGALI", "SUNNY WITH CLOUDS", 97, 74, 79, 75, hourForecasts);
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -68,8 +68,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.only(
-                    top: 80, left: 100, right: 100, bottom: 80),
+                padding: const EdgeInsets.only(top: 100, left: 100, right: 100),
                 child: Column(
                   children: [
                     const Text(
@@ -80,30 +79,15 @@ class WeatherWidgetState extends State<WeatherWidget> {
                       status.cityLocation,
                       style: const TextStyle(fontSize: 15),
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.only(top: 10, left: 100, right: 100),
-                child: Column(
-                  children: [
-                    Stack(
-                      alignment: Alignment.center,
-                      clipBehavior: Clip.none,
-                      children: [
-                        Positioned(
-                            left: 50,
-                            bottom: 50,
-                            child: Image.asset(
-                              "assets/sunny_clouds.png",
-                              width: 200,
-                              height: 200,
-                            )),
-                        Text(
-                          "${status.currentTemperature.round()}",
-                          style: const TextStyle(fontSize: 100),
-                        )
-                      ],
+                    Text(
+                      "${status.currentTemperature.round()}°",
+                      style: const TextStyle(fontSize: 80),
+                    ),
+                    Image.asset(
+                      "assets/sunny_clouds.png",
+                      width: 150,
+                      height: 150,
+                      fit: BoxFit.cover,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 8.0),
@@ -114,9 +98,9 @@ class WeatherWidgetState extends State<WeatherWidget> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("L: ${status.lowestTemperature.round()}"),
+                          Text("L: ${status.lowestTemperature.round()}°"),
                           const Spacer(),
-                          Text("H: ${status.highestTemperature.round()}"),
+                          Text("H: ${status.highestTemperature.round()}°"),
                         ],
                       ),
                     ),

@@ -27,7 +27,7 @@ class HourForecastWidgetState extends State<HourForecastWidget> {
               children: [
                 Text("${widget.forecasts[index].date.hour}"),
                 const Icon(Icons.cloud),
-                Text("${widget.forecasts[index].temperature.round()}"),
+                Text("${widget.forecasts[index].temperature.round()}°"),
               ],
             );
           },

@@ -28,9 +28,9 @@ class DaysForeCastWidgetState extends State<DaysForeCastWidget> {
                       .format(widget.d10Forecasts[index].date)
                       .substring(0, 3)),
                   const Icon(Icons.cloud),
-                  Text("${widget.d10Forecasts[index].low}"),
+                  Text("${widget.d10Forecasts[index].low?.round()}°"),
                   const Icon(Icons.arrow_forward_outlined),
-                  Text("${widget.d10Forecasts[index].high}"),
+                  Text("${widget.d10Forecasts[index].high?.round()}°"),
                 ],
               ),
             ),
