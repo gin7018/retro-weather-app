@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_ui/days_forecast_widget.dart';
 import 'package:weather_app_ui/hour_forecast_widget.dart';
+import 'package:weather_app_ui/small_card.dart';
 import 'package:weather_app_ui/style_hub.dart';
 import 'package:weather_app_ui/weather_data_provider.dart';
 
@@ -46,6 +47,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // UV INDEX, SUNSET, FEELS LIKE, PRECIPITATION
     var dt = DateTime.now();
     List<ForeCast> hourForecasts = [];
     for (int i = 0; i < 24; i++) {
@@ -61,7 +63,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
     status = WeatherStatus(
         "KIGALI", "SUNNY WITH CLOUDS", 97, 74, 79, 75, hourForecasts);
 
-    var currentTheme = sunnyTheme;
+    var currentTheme = nightTheme;
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -173,7 +175,21 @@ class WeatherWidgetState extends State<WeatherWidget> {
                           child:
                               DaysForeCastWidget(d10Forecasts: d10Forecasts)),
                     ],
-                  ))
+                  )),
+              Column(
+                children: [
+                  SmallInfoCard(
+                      cardDeco: currentTheme,
+                      cardTitle: "HUMIDITY",
+                      cardBody: "77%",
+                      description: "dew point is 65 right now"),
+                  SmallInfoCard(
+                      cardDeco: currentTheme,
+                      cardTitle: "HUMIDITY",
+                      cardBody: "77%",
+                      description: "dew point is 65 right now"),
+                ],
+              )
             ],
           ),
         ),

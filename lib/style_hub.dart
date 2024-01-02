@@ -28,11 +28,11 @@ class ColorThemeSetter {
           ),
           left: BorderSide(
             color: Colors.black,
-            width: 2,
+            width: 3,
           ),
           bottom: BorderSide(
             color: Colors.black,
-            width: 2,
+            width: 3,
           ),
         ));
   }
