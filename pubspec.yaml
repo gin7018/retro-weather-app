@@ -67,3 +67,7 @@ flutter:
       fonts:
         - asset: assets/Retro-Gaming.ttf
           style: normal
+    - family: IBM Plex Mono
+      fonts:
+        - asset: assets/IBMPlexMono-Regular.ttf
+          style: normal

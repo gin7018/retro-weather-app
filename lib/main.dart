@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_ui/days_forecast_widget.dart';
 import 'package:weather_app_ui/hour_forecast_widget.dart';
+import 'package:weather_app_ui/style_hub.dart';
 import 'package:weather_app_ui/weather_data_provider.dart';
 
 void main() {
@@ -16,7 +17,7 @@ class WeatherApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          fontFamily: 'Retro Gaming',
+          fontFamily: 'IBM Plex Mono',
           textTheme: const TextTheme().copyWith(
             bodySmall: const TextStyle(color: Colors.white),
             bodyMedium: const TextStyle(color: Colors.white),
@@ -60,11 +61,13 @@ class WeatherWidgetState extends State<WeatherWidget> {
     status = WeatherStatus(
         "KIGALI", "SUNNY WITH CLOUDS", 97, 74, 79, 75, hourForecasts);
 
+    var currentTheme = sunnyTheme;
+
     return Scaffold(
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
         child: Container(
-          color: Colors.blue.shade200,
+          color: currentTheme.background,
           child: Column(
             children: [
               Container(
@@ -111,12 +114,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
               Container(
                 margin: const EdgeInsets.all(10),
                 padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Colors.blue.shade200,
-                    border: Border.all(
-                        color: Colors.blue.shade900,
-                        width: 5,
-                        strokeAlign: BorderSide.strokeAlignCenter)),
+                decoration: currentTheme.containerDeco,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -136,7 +134,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
                       ],
                     ),
                     Container(
-                      color: Colors.blue.shade300,
+                      color: currentTheme.boxColor,
                       padding:
                           const EdgeInsets.only(top: 10, left: 10, right: 10),
                       child: HourForecastWidget(
@@ -149,12 +147,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
               Container(
                   margin: const EdgeInsets.all(10),
                   padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: Colors.blue.shade200,
-                      border: Border.all(
-                          color: Colors.blue.shade900,
-                          width: 5,
-                          strokeAlign: BorderSide.strokeAlignCenter)),
+                  decoration: currentTheme.containerDeco,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -174,7 +167,7 @@ class WeatherWidgetState extends State<WeatherWidget> {
                         ],
                       ),
                       Container(
-                          color: Colors.blue.shade300,
+                          color: currentTheme.boxColor,
                           padding: const EdgeInsets.only(
                               top: 10, left: 10, right: 10),
                           child:
