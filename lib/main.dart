@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:weather_app_ui/days_forecast_widget.dart';
 import 'package:weather_app_ui/hour_forecast_widget.dart';
 import 'package:weather_app_ui/small_card.dart';
-import 'package:weather_app_ui/style_hub.dart';
+import 'package:weather_app_ui/styles.dart';
 import 'package:weather_app_ui/weather_data_provider.dart';
 
 void main() {
@@ -37,32 +37,43 @@ class WeatherWidget extends StatefulWidget {
   State<StatefulWidget> createState() => WeatherWidgetState();
 }
 
-class WeatherWidgetState extends State<WeatherWidget> {
+class WeatherWidgetState extends State<WeatherWidget>
+    with WidgetsBindingObserver {
   late WeatherStatus status;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+
+    fetchWeatherStatus().then((value) => {
+          setState(() {
+            if (value != null) {
+              status = value;
+            }
+          })
+        });
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    fetchWeatherStatus().then((value) => {
+          setState(() {
+            if (value != null) {
+              status = value;
+            }
+          })
+        });
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // UV INDEX, SUNSET, FEELS LIKE, PRECIPITATION
-    var dt = DateTime.now();
-    List<ForeCast> hourForecasts = [];
-    for (int i = 0; i < 24; i++) {
-      dt = dt.add(const Duration(hours: 1));
-      hourForecasts.add(ForeCast(dt, 78, "rain", "rain", null, null));
-    }
-
-    List<ForeCast> d10Forecasts = [];
-    for (int i = 0; i < 10; i++) {
-      dt = dt.add(const Duration(days: 1));
-      d10Forecasts.add(ForeCast(dt, 78, "rain", "rain", 75, 80));
-    }
-    status = WeatherStatus(
-        "KIGALI", "SUNNY WITH CLOUDS", 97, 74, 79, 75, hourForecasts);
-
     var currentTheme = nightTheme;
 
     return Scaffold(
@@ -172,8 +183,8 @@ class WeatherWidgetState extends State<WeatherWidget> {
                           color: currentTheme.boxColor,
                           padding: const EdgeInsets.only(
                               top: 10, left: 10, right: 10),
-                          child:
-                              DaysForeCastWidget(d10Forecasts: d10Forecasts)),
+                          child: DaysForeCastWidget(
+                              d10Forecasts: status.h24Forecast)),
                     ],
                   )),
               Column(
