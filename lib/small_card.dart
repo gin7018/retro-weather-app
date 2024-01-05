@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_ui/style_hub.dart';
+import 'package:weather_app_ui/styles.dart';
 
 class SmallInfoCard extends StatefulWidget {
   const SmallInfoCard(
