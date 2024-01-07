@@ -39,6 +39,7 @@ class ForeCast {
 class WeatherStatus {
   String cityLocation;
   String weatherDescription;
+  String icon;
 
   double currentTemperature;
   double lowestTemperature;
@@ -51,6 +52,7 @@ class WeatherStatus {
   WeatherStatus(
       this.cityLocation,
       this.weatherDescription,
+      this.icon,
       this.currentTemperature,
       this.lowestTemperature,
       this.highestTemperature,
@@ -86,6 +88,7 @@ Future<WeatherStatus> fromJson(Map<String, dynamic> jstat) async {
   return WeatherStatus(
       "${address.city}, ${address.countryName}",
       jstat["currentConditions"]["conditions"],
+      jstat["days"][0]["icon"],
       jstat["currentConditions"]["temp"],
       jstat["days"][0]["tempmin"],
       jstat["days"][0]["tempmax"],

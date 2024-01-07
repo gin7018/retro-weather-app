@@ -28,9 +28,13 @@ class HourForecastWidgetState extends State<HourForecastWidget> {
                 if (widget.forecasts[index].date.hour > 12)
                   Text("${widget.forecasts[index].date.hour % 12} PM")
                 else
-                  Text("${widget.forecasts[index].date.hour} AM")
-                ,
-                const Icon(Icons.cloud),
+                  Text("${widget.forecasts[index].date.hour} AM"),
+                Image.asset(
+                  "assets/3rd-set-color-weather-icons/${widget.forecasts[index].icon}.png",
+                  width: 40,
+                  height: 40,
+                  fit: BoxFit.cover,
+                ),
                 Text("${widget.forecasts[index].temperature.round()}°"),
               ],
             );

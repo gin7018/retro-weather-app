@@ -27,7 +27,12 @@ class DaysForeCastWidgetState extends State<DaysForeCastWidget> {
                   Text(DateFormat('EEEE')
                       .format(widget.d10Forecasts[index].date)
                       .substring(0, 3)),
-                  const Icon(Icons.cloud),
+                  Image.asset(
+                    "assets/3rd-set-color-weather-icons/${widget.d10Forecasts[index].icon}.png",
+                    width: 40,
+                    height: 40,
+                    fit: BoxFit.cover,
+                  ),
                   Text("${widget.d10Forecasts[index].low?.round()}°"),
                   const Icon(Icons.arrow_forward_outlined),
                   Text("${widget.d10Forecasts[index].high?.round()}°"),
