@@ -2,6 +2,7 @@ import 'dart:convert';
 // import 'dart:html';
 
 // import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
@@ -46,6 +47,15 @@ class WeatherStatus {
   double highestTemperature;
   double feelsLike;
 
+  double cloudCover;
+  double uvIndex;
+  double humidity;
+  String sunRise;
+  String sunSet;
+
+  String precipitationType;
+  double precipitationProb;
+
   List<ForeCast> h24Forecast;
   List<ForeCast> tenDayForecast;
 
@@ -57,6 +67,13 @@ class WeatherStatus {
       this.lowestTemperature,
       this.highestTemperature,
       this.feelsLike,
+      this.cloudCover,
+      this.uvIndex,
+      this.humidity,
+      this.sunRise,
+      this.sunSet,
+      this.precipitationType,
+      this.precipitationProb,
       this.h24Forecast,
       this.tenDayForecast);
 }
@@ -93,6 +110,13 @@ Future<WeatherStatus> fromJson(Map<String, dynamic> jstat) async {
       jstat["days"][0]["tempmin"],
       jstat["days"][0]["tempmax"],
       jstat["currentConditions"]["feelslike"],
+      jstat["days"][0]["cloudcover"],
+      jstat["days"][0]["uvindex"],
+      jstat["days"][0]["humidity"],
+      jstat["days"][0]["sunrise"],
+      jstat["days"][0]["sunset"],
+      jstat["days"][0]["preciptype"][0],
+      jstat["days"][0]["precipprob"],
       bothDaysHourlyStatus,
       tenDayWeatherStatus);
 }

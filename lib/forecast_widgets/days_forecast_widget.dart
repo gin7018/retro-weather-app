@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_ui/weather_data_provider.dart';
+import 'package:weather_app_ui/data_provider/weather_data_provider.dart';
 import 'package:intl/intl.dart';
 
 class DaysForeCastWidget extends StatefulWidget {
@@ -34,7 +34,7 @@ class DaysForeCastWidgetState extends State<DaysForeCastWidget> {
                     fit: BoxFit.cover,
                   ),
                   Text("${widget.d10Forecasts[index].low?.round()}°"),
-                  const Icon(Icons.arrow_forward_outlined),
+                  const Text("/"),
                   Text("${widget.d10Forecasts[index].high?.round()}°"),
                 ],
               ),

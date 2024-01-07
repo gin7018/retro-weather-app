@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_ui/styles.dart';
+import 'package:weather_app_ui/misc/styles.dart';
 
 class SmallInfoCard extends StatefulWidget {
   const SmallInfoCard(
@@ -7,12 +7,12 @@ class SmallInfoCard extends StatefulWidget {
       required this.cardDeco,
       required this.cardTitle,
       required this.cardBody,
-      required this.description});
+      this.description});
 
   final ColorThemeSetter cardDeco;
   final String cardTitle;
   final String cardBody;
-  final String description;
+  final String? description;
 
   @override
   State<SmallInfoCard> createState() => _SmallInfoCardState();
@@ -45,7 +45,7 @@ class _SmallInfoCardState extends State<SmallInfoCard> {
                     fontSize: 40,
                   ),
                 ),
-                Text(widget.description)
+                Text(widget.description ?? "")
               ],
             ),
           )

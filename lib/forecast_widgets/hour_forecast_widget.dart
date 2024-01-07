@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_ui/weather_data_provider.dart';
+import 'package:weather_app_ui/data_provider/weather_data_provider.dart';
 
 class HourForecastWidget extends StatefulWidget {
   final List<ForeCast> forecasts;
@@ -17,7 +17,7 @@ class HourForecastWidgetState extends State<HourForecastWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 80,
+        height: 90,
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
