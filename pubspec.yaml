@@ -27,6 +27,7 @@ dependencies:
   intl: ^0.19.0
   geocoding: ^2.1.1
   geocode: ^1.0.3
+  string_2_icon: ^0.0.2
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/
+    - assets/3rd-set-color-weather-icons/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
