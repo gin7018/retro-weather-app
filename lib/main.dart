@@ -50,6 +50,7 @@ class WeatherWidgetState extends State<WeatherWidget>
           setState(() {
             if (value != null) {
               status = value;
+              print("bruhhhhhh i got the status updated");
             }
           })
         });
@@ -140,9 +141,7 @@ class WeatherWidgetState extends State<WeatherWidget>
                         ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 8.0),
-                          child: Text(
-                            "HOURLY FORECAST",
-                          ),
+                          child: Text("HOURLY FORECAST"),
                         ),
                       ],
                     ),
@@ -173,9 +172,7 @@ class WeatherWidgetState extends State<WeatherWidget>
                           ),
                           Padding(
                             padding: EdgeInsets.only(bottom: 8),
-                            child: Text(
-                              "10 DAY FORECAST",
-                            ),
+                            child: Text("10 DAY FORECAST"),
                           ),
                         ],
                       ),
@@ -184,7 +181,7 @@ class WeatherWidgetState extends State<WeatherWidget>
                           padding: const EdgeInsets.only(
                               top: 10, left: 10, right: 10),
                           child: DaysForeCastWidget(
-                              d10Forecasts: status.h24Forecast)),
+                              d10Forecasts: status.tenDayForecast)),
                     ],
                   )),
               Column(

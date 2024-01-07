@@ -25,7 +25,11 @@ class HourForecastWidgetState extends State<HourForecastWidget> {
           itemBuilder: (context, index) {
             return Column(
               children: [
-                Text("${widget.forecasts[index].date.hour}"),
+                if (widget.forecasts[index].date.hour > 12)
+                  Text("${widget.forecasts[index].date.hour % 12} PM")
+                else
+                  Text("${widget.forecasts[index].date.hour} AM")
+                ,
                 const Icon(Icons.cloud),
                 Text("${widget.forecasts[index].temperature.round()}°"),
               ],
