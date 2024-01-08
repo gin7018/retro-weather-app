@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_ui/cards/city_card.dart';
-import 'package:weather_app_ui/cards/styles.dart';
 import 'package:weather_app_ui/pages/city_search_bar.dart';
 
 class CitySearchWidget extends StatefulWidget {

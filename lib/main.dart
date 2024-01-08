@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:weather_app_ui/cards/styles.dart';
 import 'package:weather_app_ui/pages/city_search.dart';
 import 'package:weather_app_ui/pages/weather_widget.dart';
 
