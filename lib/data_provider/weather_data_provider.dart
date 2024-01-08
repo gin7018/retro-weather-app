@@ -1,12 +1,8 @@
 import 'dart:convert';
-// import 'dart:html';
 
-// import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:geocode/geocode.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:http/http.dart' as http;
-// import 'package:geolocator/geolocator.dart';
 import 'dart:developer' as developer;
 
 class ForeCast {
