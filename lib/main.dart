@@ -1,14 +1,6 @@
-// ignore_for_file: non_constant_identifier_names
-
 import 'package:flutter/material.dart';
-import 'package:weather_app_ui/forecast_widgets/days_forecast_widget.dart';
-import 'package:weather_app_ui/forecast_widgets/hour_forecast_widget.dart';
-import 'package:weather_app_ui/misc/small_card.dart';
-import 'package:weather_app_ui/misc/styles.dart';
-import 'package:weather_app_ui/data_provider/weather_data_provider.dart';
-import 'package:string_2_icon/string_2_icon.dart';
-
-import 'pages/weather_widget.dart';
+import 'package:weather_app_ui/cards/styles.dart';
+import 'package:weather_app_ui/pages/city_search.dart';
 
 void main() {
   runApp(const WeatherApp());
@@ -29,7 +21,9 @@ class WeatherApp extends StatelessWidget {
             bodyLarge: const TextStyle(color: Colors.white),
           ),
           iconTheme: const IconThemeData(color: Colors.white)),
-      home: const WeatherWidget(),
+      home: CitySearchWidget(
+        currentTheme: nightTheme,
+      ),
     );
   }
 }

@@ -3,8 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_ui/forecast_widgets/days_forecast_widget.dart';
 import 'package:weather_app_ui/forecast_widgets/hour_forecast_widget.dart';
-import 'package:weather_app_ui/misc/small_card.dart';
-import 'package:weather_app_ui/misc/styles.dart';
+import 'package:weather_app_ui/cards/small_card.dart';
+import 'package:weather_app_ui/cards/styles.dart';
 import 'package:weather_app_ui/data_provider/weather_data_provider.dart';
 
 class WeatherWidget extends StatefulWidget {
