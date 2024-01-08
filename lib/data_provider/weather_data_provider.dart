@@ -95,11 +95,11 @@ Future<WeatherStatus> fromJson(Map<String, dynamic> jstat) async {
       .map((e) => ForeCast.dayFromJson(e))
       .toList();
 
-  Address address =
-      await retrieveLocationDetails(jstat["latitude"], jstat["longitude"]);
+  // Address address =
+  //     await retrieveLocationDetails(jstat["latitude"], jstat["longitude"]);
 
   return WeatherStatus(
-      "${address.city}, ${address.countryName}",
+      jstat["address"],
       jstat["currentConditions"]["conditions"],
       jstat["days"][0]["icon"],
       jstat["currentConditions"]["temp"],
@@ -143,7 +143,7 @@ Future<Address> retrieveLocationDetails(
   }
 }
 
-Future<WeatherStatus?> fetchWeatherStatus() async {
+Future<WeatherStatus?> fetchWeatherStatus(String city) async {
   // need to ask user to share their location
   // Position location;
   //
@@ -153,7 +153,7 @@ Future<WeatherStatus?> fetchWeatherStatus() async {
   // }
   //
   // location = await Geolocator.getCurrentPosition();
-  var location = [-1.972572, 30.125784];
+  // var location = [-1.972572, 30.125784];
 
   final statusRequest = await http.get(Uri(
       scheme: "https",
@@ -162,14 +162,13 @@ Future<WeatherStatus?> fetchWeatherStatus() async {
       queryParameters: {
         "key": "MDCQ6R9Z6U4NKDJD8JNXNWGR8",
         "lang": "en",
-        "location": "${location[0]},${location[1]}",
+        "location": city,
         "date1": DateTime.now().toString(),
         "include": "days,hours,alerts,current",
         "options": "noheaders"
       }));
 
   if (statusRequest.statusCode == 200) {
-    // print("the result: ${statusRequest.body}");
     var weatherStats =
         fromJson(jsonDecode(statusRequest.body) as Map<String, dynamic>);
     return weatherStats;
@@ -177,11 +176,11 @@ Future<WeatherStatus?> fetchWeatherStatus() async {
   return null;
 }
 
-void main() {
-  WeatherStatus? status;
-  fetchWeatherStatus().then((value) => {
-        if (value != null) {status = value}
-      });
+// void main() {
+//   WeatherStatus? status;
+//   fetchWeatherStatus().then((value) => {
+//         if (value != null) {status = value}
+//       });
 
-  print(status);
-}
+//   print(status);
+// }

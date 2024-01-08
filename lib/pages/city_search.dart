@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:weather_app_ui/cards/city_card.dart';
 import 'package:weather_app_ui/main.dart';
 import 'package:weather_app_ui/pages/city_search_bar.dart';
-import 'package:weather_app_ui/pages/weather_widget.dart';
 import 'package:get_storage/get_storage.dart';
 
 class CitySearchWidget extends StatefulWidget {
@@ -12,7 +11,14 @@ class CitySearchWidget extends StatefulWidget {
   State<CitySearchWidget> createState() => _CitySearchWidgetState();
 }
 
+List<dynamic> getBookmarkedCities() {
+  final box = GetStorage();
+  return box.read("bookmarked-cities") ?? [];
+}
+
 class _CitySearchWidgetState extends State<CitySearchWidget> {
+  List<dynamic> bookmarkedCities = getBookmarkedCities();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,22 +36,26 @@ class _CitySearchWidgetState extends State<CitySearchWidget> {
             ),
           ),
           const CitySearchBar(),
-          Container(
-              padding: const EdgeInsets.only(top: 20),
-              child: Column(
-                children: [
-                  GestureDetector(
-                      onTap: () => Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const WeatherAppNavigator(
-                              startingPageIndex: 0,
-                            ),
-                          )),
-                      child: const CityCard(location: "Kigali Rwanda")),
-                  CityCard(location: "Kigali Rwanda"),
-                ],
-              ))
+          ListView.separated(
+            scrollDirection: Axis.vertical,
+            itemCount: bookmarkedCities.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return GestureDetector(
+                  onTap: () => Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => WeatherAppNavigator(
+                          startingPageIndex: 0,
+                          defaultCity: bookmarkedCities[index],
+                        ),
+                      )),
+                  child: CityCard(location: bookmarkedCities[index]));
+            },
+            separatorBuilder: ((context, index) => const SizedBox(
+                  height: 20,
+                )),
+          )
         ],
       ),
     );

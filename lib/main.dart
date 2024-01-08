@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:weather_app_ui/pages/city_search.dart';
 import 'package:weather_app_ui/pages/weather_widget.dart';
 
-void main() {
+Future<void> main() async {
+  await GetStorage.init();
   runApp(const WeatherApp());
 }
 
@@ -23,14 +25,17 @@ class WeatherApp extends StatelessWidget {
           iconTheme: const IconThemeData(color: Colors.white)),
       home: const WeatherAppNavigator(
         startingPageIndex: 0,
+        defaultCity: "Kigali, Rwanda",
       ),
     );
   }
 }
 
 class WeatherAppNavigator extends StatefulWidget {
-  const WeatherAppNavigator({super.key, required this.startingPageIndex});
+  const WeatherAppNavigator(
+      {super.key, required this.startingPageIndex, required this.defaultCity});
   final int startingPageIndex;
+  final String? defaultCity;
 
   @override
   State<WeatherAppNavigator> createState() => _WeatherAppNavigatorState();
@@ -69,7 +74,10 @@ class _WeatherAppNavigatorState extends State<WeatherAppNavigator> {
               label: "")
         ],
       ),
-      body: [const WeatherWidget(), const CitySearchWidget()][currentPageIndex],
+      body: [
+        WeatherWidget(city: widget.defaultCity ?? "Kigali, Rwanda"),
+        const CitySearchWidget()
+      ][currentPageIndex],
     );
   }
 }

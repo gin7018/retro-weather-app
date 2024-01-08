@@ -19,7 +19,7 @@ class _CityCardState extends State<CityCard> {
   }
 
   Future<void> initializeWeatherStatus() async {
-    cityWeatherStatus = (await fetchWeatherStatus())!;
+    cityWeatherStatus = (await fetchWeatherStatus(widget.location))!;
     print("the statusssss ${cityWeatherStatus.toString()}");
   }
 

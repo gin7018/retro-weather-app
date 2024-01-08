@@ -1,7 +1,5 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:weather_app_ui/forecast_widgets/days_forecast_widget.dart';
 import 'package:weather_app_ui/forecast_widgets/hour_forecast_widget.dart';
@@ -12,7 +10,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:weather_app_ui/main.dart';
 
 class WeatherWidget extends StatefulWidget {
-  const WeatherWidget({super.key});
+  const WeatherWidget({super.key, required this.city});
+  final String city;
 
   @override
   State<StatefulWidget> createState() => WeatherWidgetState();
@@ -22,7 +21,6 @@ class WeatherWidgetState extends State<WeatherWidget>
     with WidgetsBindingObserver {
   late WeatherStatus status;
   ColorThemeSetter currentTheme = sunnyTheme;
-  late List<String> bookmarkedCities = ["Kigali, Rwanda"];
 
   @override
   void initState() {
@@ -32,7 +30,7 @@ class WeatherWidgetState extends State<WeatherWidget>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    status = (await fetchWeatherStatus())!;
+    status = (await fetchWeatherStatus(widget.city))!;
     currentTheme = sunnyTheme;
 
     if (status.h24Forecast[0].date.hour >= 6) {
@@ -49,8 +47,8 @@ class WeatherWidgetState extends State<WeatherWidget>
   }
 
   Future<void> initializeWeatherStatus() async {
-    status = (await fetchWeatherStatus())!;
-    print("the statusssss ${status.toString()}");
+    status = (await fetchWeatherStatus(widget.city))!;
+    print("the statusssss ${status.weatherDescription}");
 
     if (status.h24Forecast[0].date.hour >= 6) {
       currentTheme = nightTheme;
@@ -61,7 +59,7 @@ class WeatherWidgetState extends State<WeatherWidget>
 
   bool isCityBookmarked(String city) {
     final box = GetStorage();
-    List<String> bookmarkedCities = box.read("bookmarked-cities") ?? [];
+    List<dynamic> bookmarkedCities = box.read("bookmarked-cities") ?? [];
     return bookmarkedCities.contains(city);
   }
 
@@ -79,6 +77,7 @@ class WeatherWidgetState extends State<WeatherWidget>
         MaterialPageRoute(
             builder: (context) => const WeatherAppNavigator(
                   startingPageIndex: 1,
+                  defaultCity: null,
                 )));
   }
 
