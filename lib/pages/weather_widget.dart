@@ -17,13 +17,12 @@ class WeatherWidget extends StatefulWidget {
 class WeatherWidgetState extends State<WeatherWidget>
     with WidgetsBindingObserver {
   late WeatherStatus status;
-  late ColorThemeSetter currentTheme;
+  static ColorThemeSetter currentTheme = sunnyTheme;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    currentTheme = sunnyTheme;
   }
 
   Future<void> initializeWeatherStatus() async {

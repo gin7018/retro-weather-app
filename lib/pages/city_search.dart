@@ -4,8 +4,7 @@ import 'package:weather_app_ui/cards/styles.dart';
 import 'package:weather_app_ui/pages/city_search_bar.dart';
 
 class CitySearchWidget extends StatefulWidget {
-  const CitySearchWidget({super.key, required this.currentTheme});
-  final ColorThemeSetter currentTheme;
+  const CitySearchWidget({super.key});
 
   @override
   State<CitySearchWidget> createState() => _CitySearchWidgetState();
@@ -33,6 +32,7 @@ class _CitySearchWidgetState extends State<CitySearchWidget> {
               padding: const EdgeInsets.only(top: 20),
               child: const Column(
                 children: [
+                  CityCard(location: "Kigali Rwanda"),
                   CityCard(location: "Kigali Rwanda"),
                 ],
               ))

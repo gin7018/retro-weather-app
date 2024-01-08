@@ -47,7 +47,7 @@ class _CityCardState extends State<CityCard> {
         builder: (context, snapshot) {
           if (snapshot.connectionState != ConnectionState.done) {
             return const Center(
-              child: RefreshProgressIndicator(
+              child: LinearProgressIndicator(
                 color: Colors.white,
                 backgroundColor: Colors.black,
               ),
@@ -56,6 +56,7 @@ class _CityCardState extends State<CityCard> {
             return Container(
               height: 100,
               padding: const EdgeInsets.all(10),
+              margin: const EdgeInsets.only(bottom: 10),
               decoration:
                   getContainerDeco(cityWeatherStatus.h24Forecast[0].date),
               child: Row(
