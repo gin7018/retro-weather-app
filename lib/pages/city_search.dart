@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:weather_app_ui/cards/city_card.dart';
+import 'package:weather_app_ui/main.dart';
 import 'package:weather_app_ui/pages/city_search_bar.dart';
+import 'package:weather_app_ui/pages/weather_widget.dart';
+import 'package:get_storage/get_storage.dart';
 
 class CitySearchWidget extends StatefulWidget {
   const CitySearchWidget({super.key});
@@ -29,9 +32,17 @@ class _CitySearchWidgetState extends State<CitySearchWidget> {
           const CitySearchBar(),
           Container(
               padding: const EdgeInsets.only(top: 20),
-              child: const Column(
+              child: Column(
                 children: [
-                  CityCard(location: "Kigali Rwanda"),
+                  GestureDetector(
+                      onTap: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const WeatherAppNavigator(
+                              startingPageIndex: 0,
+                            ),
+                          )),
+                      child: const CityCard(location: "Kigali Rwanda")),
                   CityCard(location: "Kigali Rwanda"),
                 ],
               ))

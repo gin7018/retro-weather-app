@@ -1,11 +1,15 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:weather_app_ui/forecast_widgets/days_forecast_widget.dart';
 import 'package:weather_app_ui/forecast_widgets/hour_forecast_widget.dart';
 import 'package:weather_app_ui/cards/small_card.dart';
 import 'package:weather_app_ui/cards/styles.dart';
 import 'package:weather_app_ui/data_provider/weather_data_provider.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:weather_app_ui/main.dart';
 
 class WeatherWidget extends StatefulWidget {
   const WeatherWidget({super.key});
@@ -17,23 +21,13 @@ class WeatherWidget extends StatefulWidget {
 class WeatherWidgetState extends State<WeatherWidget>
     with WidgetsBindingObserver {
   late WeatherStatus status;
-  static ColorThemeSetter currentTheme = sunnyTheme;
+  ColorThemeSetter currentTheme = sunnyTheme;
+  late List<String> bookmarkedCities = ["Kigali, Rwanda"];
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-  }
-
-  Future<void> initializeWeatherStatus() async {
-    status = (await fetchWeatherStatus())!;
-    print("the statusssss ${status.toString()}");
-
-    if (status.h24Forecast[0].date.hour >= 6) {
-      currentTheme = nightTheme;
-    } else if (status.icon.contains("cloudy")) {
-      currentTheme = cloudyTheme;
-    }
   }
 
   @override
@@ -52,6 +46,40 @@ class WeatherWidgetState extends State<WeatherWidget>
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+  }
+
+  Future<void> initializeWeatherStatus() async {
+    status = (await fetchWeatherStatus())!;
+    print("the statusssss ${status.toString()}");
+
+    if (status.h24Forecast[0].date.hour >= 6) {
+      currentTheme = nightTheme;
+    } else if (status.icon.contains("cloudy")) {
+      currentTheme = cloudyTheme;
+    }
+  }
+
+  bool isCityBookmarked(String city) {
+    final box = GetStorage();
+    List<String> bookmarkedCities = box.read("bookmarked-cities") ?? [];
+    return bookmarkedCities.contains(city);
+  }
+
+  Future addCityToBookMarkAndGoBack(String city, bool add) {
+    final box = GetStorage();
+    List<String> bookmarkedCities = box.read("bookmarked-cities") ?? [];
+
+    if (!bookmarkedCities.contains(city) && add) {
+      bookmarkedCities.add(city);
+      box.write("bookmarked-cities", bookmarkedCities);
+    }
+
+    return Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const WeatherAppNavigator(
+                  startingPageIndex: 1,
+                )));
   }
 
   @override
@@ -88,9 +116,28 @@ class WeatherWidgetState extends State<WeatherWidget>
                 color: currentTheme.background,
                 child: Column(
                   children: [
+                    if (!isCityBookmarked(status.cityLocation))
+                      Container(
+                        padding:
+                            const EdgeInsets.only(top: 50, left: 20, right: 20),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                                onTap: () => addCityToBookMarkAndGoBack(
+                                    status.cityLocation, false),
+                                child: const Text("CANCEL")),
+                            GestureDetector(
+                                onTap: () => addCityToBookMarkAndGoBack(
+                                    status.cityLocation, true),
+                                child: const Text("ADD")),
+                          ],
+                        ),
+                      ),
                     Container(
                       padding:
-                          const EdgeInsets.only(top: 100, left: 80, right: 80),
+                          const EdgeInsets.only(top: 80, left: 80, right: 80),
                       child: Column(
                         children: [
                           Padding(

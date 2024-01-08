@@ -21,20 +21,23 @@ class WeatherApp extends StatelessWidget {
             bodyLarge: const TextStyle(color: Colors.white),
           ),
           iconTheme: const IconThemeData(color: Colors.white)),
-      home: const WeatherAppNavigator(),
+      home: const WeatherAppNavigator(
+        startingPageIndex: 0,
+      ),
     );
   }
 }
 
 class WeatherAppNavigator extends StatefulWidget {
-  const WeatherAppNavigator({super.key});
+  const WeatherAppNavigator({super.key, required this.startingPageIndex});
+  final int startingPageIndex;
 
   @override
   State<WeatherAppNavigator> createState() => _WeatherAppNavigatorState();
 }
 
 class _WeatherAppNavigatorState extends State<WeatherAppNavigator> {
-  int currentPageIndex = 0;
+  late int currentPageIndex = widget.startingPageIndex;
 
   @override
   Widget build(BuildContext context) {
