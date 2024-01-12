@@ -24,6 +24,7 @@ class _CitySearchWidgetState extends State<CitySearchWidget> {
     return Container(
       padding: const EdgeInsets.only(top: 100, left: 20, right: 20),
       color: Colors.black,
+      height: double.infinity,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,26 +36,37 @@ class _CitySearchWidgetState extends State<CitySearchWidget> {
                   Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 30),
             ),
           ),
-          const CitySearchBar(),
-          ListView.separated(
-            scrollDirection: Axis.vertical,
-            itemCount: bookmarkedCities.length,
-            shrinkWrap: true,
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                  onTap: () => Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => WeatherAppNavigator(
-                          startingPageIndex: 0,
-                          defaultCity: bookmarkedCities[index],
-                        ),
-                      )),
-                  child: CityCard(location: bookmarkedCities[index]));
-            },
-            separatorBuilder: ((context, index) => const SizedBox(
-                  height: 20,
-                )),
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Positioned(
+                top: 30,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 40,
+                  child: ListView.separated(
+                    scrollDirection: Axis.vertical,
+                    itemCount: bookmarkedCities.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                          onTap: () => Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => WeatherAppNavigator(
+                                  startingPageIndex: 0,
+                                  defaultCity: bookmarkedCities[index],
+                                ),
+                              )),
+                          child: CityCard(location: bookmarkedCities[index]));
+                    },
+                    separatorBuilder: ((context, index) => const SizedBox(
+                          height: 20,
+                        )),
+                  ),
+                ),
+              ),
+              const CitySearchBar(),
+            ],
           )
         ],
       ),

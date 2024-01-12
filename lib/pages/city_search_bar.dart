@@ -1,4 +1,12 @@
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:uuid/uuid.dart';
+import 'package:weather_app_ui/cards/styles.dart';
+import 'package:weather_app_ui/data_provider/places_autocompleter.dart';
+import 'package:searchfield/searchfield.dart';
+import 'package:weather_app_ui/main.dart';
 
 class CitySearchBar extends StatefulWidget {
   const CitySearchBar({super.key});
@@ -8,64 +16,83 @@ class CitySearchBar extends StatefulWidget {
 }
 
 class _CitySearchBarState extends State<CitySearchBar> {
+  List<String> suggestedCities = [];
+  TextEditingController textController = TextEditingController();
+  FocusNode focusNode = FocusNode();
+  bool showSearchView = false;
+
+  Future<void> fetchSuggestions(String query) async {
+    var sessionToken = const Uuid().v4();
+    var result = await autocompletePlaces(query, sessionToken);
+    setState(() {
+      suggestedCities = result;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 50,
-      // decoration: widget.currentTheme.containerDeco,
-      child: SearchAnchor(
-        isFullScreen: false,
-        headerTextStyle: Theme.of(context).textTheme.bodyMedium,
-        headerHintStyle: Theme.of(context).textTheme.bodyMedium,
-        viewBackgroundColor: Colors.grey.shade900,
-        viewShape: const BeveledRectangleBorder(),
-        viewSide: const BorderSide(color: Colors.white),
-        viewHintText: "search for a city",
-        dividerColor: Colors.white,
-        builder: (BuildContext context, SearchController controller) {
-          return SearchBar(
-            backgroundColor: MaterialStateProperty.all(
-              Colors.grey.shade900,
-            ),
-            elevation: const MaterialStatePropertyAll(0),
-            shape: MaterialStateProperty.all(const BeveledRectangleBorder()),
-            padding: const MaterialStatePropertyAll<EdgeInsets>(
-                EdgeInsets.symmetric(horizontal: 8.0)),
-            hintText: "search for a city",
-            controller: controller,
-            onTap: () {
-              controller.openView();
-            },
-            onChanged: (value) {
-              controller.openView();
-            },
-            trailing: const [
-              Icon(
-                Icons.search,
-                size: 35,
-                color: Colors.grey,
-              )
-            ],
-          );
-        },
-        suggestionsBuilder:
-            (BuildContext context, SearchController controller) {
-          return [
-            const ListTile(
-              title: Text("LONDON GYAL"),
-              textColor: Colors.white,
-            ),
-            const ListTile(
-              title: Text("LONDON GYAL"),
-              textColor: Colors.white,
-            ),
-            const ListTile(
-              title: Text("LONDON GYAL"),
-              textColor: Colors.white,
-            )
-          ];
-        },
-      ),
-    );
+        decoration: searchDecoration,
+        child: Column(children: [
+          TextField(
+              controller: textController,
+              focusNode: focusNode,
+              showCursor: true,
+              cursorColor: Colors.white,
+              onTap: (() => setState(() {
+                    showSearchView = true;
+                  })),
+              onChanged: (query) async {
+                showSearchView = true;
+                await fetchSuggestions(query);
+              },
+              decoration: InputDecoration(
+                hintText: 'search city',
+                prefixIcon: showSearchView
+                    ? IconButton(
+                        onPressed: (() {
+                          setState(() {
+                            showSearchView = false;
+                            suggestedCities.clear();
+                            focusNode.unfocus();
+                          });
+                        }),
+                        icon: const Icon(Icons.arrow_back))
+                    : const Icon(
+                        Icons.search,
+                      ),
+                suffixIcon: showSearchView
+                    ? IconButton(
+                        onPressed: (() {
+                          setState(() {
+                            suggestedCities.clear();
+                          });
+                          textController.clear();
+                        }),
+                        icon: const Icon(Icons.cancel))
+                    : null,
+                iconColor: Colors.white,
+              )),
+          if (showSearchView == true)
+            SizedBox(
+                height: 300,
+                child: ListView.builder(
+                  itemCount: suggestedCities.length,
+                  itemBuilder: ((context, index) {
+                    return ListTile(
+                      title: Text(suggestedCities[index]),
+                      titleTextStyle: Theme.of(context).textTheme.bodyMedium,
+                      onTap: () => Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WeatherAppNavigator(
+                              startingPageIndex: 0,
+                              defaultCity: suggestedCities[index],
+                            ),
+                          )),
+                    );
+                  }),
+                ))
+        ]));
   }
 }

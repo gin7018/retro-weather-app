@@ -65,6 +65,27 @@ BoxDecoration getContainerDeco(DateTime date) {
       ));
 }
 
+BoxDecoration searchDecoration = const BoxDecoration(
+    color: Colors.black,
+    border: Border(
+      top: BorderSide(
+        color: Colors.white,
+        width: 1,
+      ),
+      right: BorderSide(
+        color: Colors.white,
+        width: 1,
+      ),
+      left: BorderSide(
+        color: Colors.white,
+        width: 1,
+      ),
+      bottom: BorderSide(
+        color: Colors.white,
+        width: 1,
+      ),
+    ));
+
 final sunnyTheme =
     ColorThemeSetter(SUNNY_WEATHER_BOX_COLOR, SUNNY_WEATHER_BACKGROUND_COLOR);
 final cloudyTheme =

@@ -30,14 +30,7 @@ class WeatherWidgetState extends State<WeatherWidget>
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    status = (await fetchWeatherStatus(widget.city))!;
-    currentTheme = sunnyTheme;
-
-    if (status.h24Forecast[0].date.hour >= 6) {
-      currentTheme = nightTheme;
-    } else if (status.icon.contains("cloudy")) {
-      currentTheme = cloudyTheme;
-    }
+    await initializeWeatherStatus();
   }
 
   @override
@@ -47,7 +40,13 @@ class WeatherWidgetState extends State<WeatherWidget>
   }
 
   Future<void> initializeWeatherStatus() async {
-    status = (await fetchWeatherStatus(widget.city))!;
+    var result = (await fetchWeatherStatus(widget.city));
+    if (result == null) {
+      status = WeatherStatus(
+          "error", "error", "", 0, 0, 0, 0, 0, 0, 0, "", "", "", 0, [], []);
+    } else {
+      status = result;
+    }
     print("the statusssss ${status.weatherDescription}");
 
     if (status.h24Forecast[0].date.hour >= 6) {
@@ -65,7 +64,7 @@ class WeatherWidgetState extends State<WeatherWidget>
 
   Future addCityToBookMarkAndGoBack(String city, bool add) {
     final box = GetStorage();
-    List<String> bookmarkedCities = box.read("bookmarked-cities") ?? [];
+    List<dynamic> bookmarkedCities = box.read("bookmarked-cities") ?? [];
 
     if (!bookmarkedCities.contains(city) && add) {
       bookmarkedCities.add(city);
