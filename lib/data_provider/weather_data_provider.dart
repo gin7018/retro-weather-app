@@ -97,6 +97,8 @@ Future<WeatherStatus> fromJson(Map<String, dynamic> jstat) async {
 
   // Address address =
   //     await retrieveLocationDetails(jstat["latitude"], jstat["longitude"]);
+  print(
+      "city: ${jstat["address"]} temp: ${jstat["currentConditions"]["temp"]}");
 
   return WeatherStatus(
       jstat["address"],
@@ -171,7 +173,10 @@ Future<WeatherStatus?> fetchWeatherStatus(String city) async {
   if (statusRequest.statusCode == 200) {
     var weatherStats =
         fromJson(jsonDecode(statusRequest.body) as Map<String, dynamic>);
+    print("call passed thru ${statusRequest.statusCode}");
     return weatherStats;
+  } else {
+    print("error: ${statusRequest.statusCode}, \n ${statusRequest.body}");
   }
   return null;
 }

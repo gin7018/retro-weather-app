@@ -19,7 +19,7 @@ class WeatherWidget extends StatefulWidget {
 
 class WeatherWidgetState extends State<WeatherWidget>
     with WidgetsBindingObserver {
-  late WeatherStatus status;
+  WeatherStatus? status;
   ColorThemeSetter currentTheme = sunnyTheme;
 
   @override
@@ -40,18 +40,19 @@ class WeatherWidgetState extends State<WeatherWidget>
   }
 
   Future<void> initializeWeatherStatus() async {
-    var result = (await fetchWeatherStatus(widget.city));
-    if (result == null) {
-      status = WeatherStatus(
-          "error", "error", "", 0, 0, 0, 0, 0, 0, 0, "", "", "", 0, [], []);
-    } else {
-      status = result;
-    }
-    print("the statusssss ${status.weatherDescription}");
+    setState(() async {
+      print("initializing the status... for ${widget.city}");
+      status = await fetchWeatherStatus(widget.city);
+      if (status == null) {
+        print("NULL STATUS");
+      }
 
-    if (status.h24Forecast[0].date.hour >= 6) {
+      print("the statusssss ${status!.weatherDescription}");
+    });
+
+    if (status!.h24Forecast[0].date.hour >= 6) {
       currentTheme = nightTheme;
-    } else if (status.icon.contains("cloudy")) {
+    } else if (status!.icon.contains("cloudy")) {
       currentTheme = cloudyTheme;
     }
   }
@@ -85,7 +86,7 @@ class WeatherWidgetState extends State<WeatherWidget>
     return FutureBuilder(
         future: initializeWeatherStatus(),
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return Container(
               padding: const EdgeInsets.only(top: 400, left: 100, right: 100),
               color: currentTheme.background,
@@ -114,7 +115,7 @@ class WeatherWidgetState extends State<WeatherWidget>
                 color: currentTheme.background,
                 child: Column(
                   children: [
-                    if (!isCityBookmarked(status.cityLocation))
+                    if (!isCityBookmarked(status!.cityLocation))
                       Container(
                         padding:
                             const EdgeInsets.only(top: 50, left: 20, right: 20),
@@ -124,11 +125,11 @@ class WeatherWidgetState extends State<WeatherWidget>
                           children: [
                             GestureDetector(
                                 onTap: () => addCityToBookMarkAndGoBack(
-                                    status.cityLocation, false),
+                                    status!.cityLocation, false),
                                 child: const Text("CANCEL")),
                             GestureDetector(
                                 onTap: () => addCityToBookMarkAndGoBack(
-                                    status.cityLocation, true),
+                                    status!.cityLocation, true),
                                 child: const Text("ADD")),
                           ],
                         ),
@@ -141,7 +142,7 @@ class WeatherWidgetState extends State<WeatherWidget>
                           Padding(
                             padding: const EdgeInsets.only(bottom: 20.0),
                             child: Text(
-                              status.cityLocation.toUpperCase(),
+                              status!.cityLocation.toUpperCase(),
                               style: const TextStyle(fontSize: 20),
                             ),
                           ),
@@ -149,11 +150,11 @@ class WeatherWidgetState extends State<WeatherWidget>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                "${status.currentTemperature.round()}°",
+                                "${status!.currentTemperature.round()}°",
                                 style: const TextStyle(fontSize: 60),
                               ),
                               Image.asset(
-                                "assets/3rd-set-color-weather-icons/${status.icon}.png",
+                                "assets/3rd-set-color-weather-icons/${status!.icon}.png",
                                 width: 100,
                                 height: 100,
                                 fit: BoxFit.cover,
@@ -162,7 +163,8 @@ class WeatherWidgetState extends State<WeatherWidget>
                           ),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 8.0),
-                            child: Text(status.weatherDescription.toUpperCase(),
+                            child: Text(
+                                status!.weatherDescription.toUpperCase(),
                                 style: const TextStyle(fontSize: 15)),
                           ),
                           Padding(
@@ -170,10 +172,11 @@ class WeatherWidgetState extends State<WeatherWidget>
                             child: Row(
                               // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                Text("L: ${status.lowestTemperature.round()}°",
+                                Text("L: ${status!.lowestTemperature.round()}°",
                                     style: const TextStyle(fontSize: 20)),
                                 const Spacer(),
-                                Text("H: ${status.highestTemperature.round()}°",
+                                Text(
+                                    "H: ${status!.highestTemperature.round()}°",
                                     style: const TextStyle(fontSize: 20)),
                               ],
                             ),
@@ -207,7 +210,7 @@ class WeatherWidgetState extends State<WeatherWidget>
                             padding: const EdgeInsets.only(
                                 top: 10, left: 10, right: 10, bottom: 10),
                             child: HourForecastWidget(
-                              forecasts: status.h24Forecast,
+                              forecasts: status!.h24Forecast,
                             ),
                           ),
                         ],
@@ -238,7 +241,7 @@ class WeatherWidgetState extends State<WeatherWidget>
                                 padding: const EdgeInsets.only(
                                     top: 10, left: 10, right: 10),
                                 child: DaysForeCastWidget(
-                                    d10Forecasts: status.tenDayForecast)),
+                                    d10Forecasts: status!.tenDayForecast)),
                           ],
                         )),
                     Column(
@@ -246,20 +249,20 @@ class WeatherWidgetState extends State<WeatherWidget>
                         SmallInfoCard(
                             cardDeco: currentTheme,
                             cardTitle: "CLOUD COVER",
-                            cardBody: "${status.cloudCover}%"),
+                            cardBody: "${status?.cloudCover}%"),
                         SmallInfoCard(
                             cardDeco: currentTheme,
                             cardTitle:
-                                "CHANCE OF ${status.precipitationType.toUpperCase()}",
-                            cardBody: "${status.precipitationProb}%"),
+                                "CHANCE OF ${status?.precipitationType.toUpperCase()}",
+                            cardBody: "${status?.precipitationProb}%"),
                         SmallInfoCard(
                             cardDeco: currentTheme,
                             cardTitle: "UV INDEX",
-                            cardBody: "${status.uvIndex}"),
+                            cardBody: "${status?.uvIndex}"),
                         SmallInfoCard(
                             cardDeco: currentTheme,
                             cardTitle: "HUMIDITY",
-                            cardBody: "${status.humidity}%"),
+                            cardBody: "${status?.humidity}%"),
                       ],
                     )
                   ],
