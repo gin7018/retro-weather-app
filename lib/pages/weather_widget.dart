@@ -17,26 +17,13 @@ class WeatherWidget extends StatefulWidget {
   State<StatefulWidget> createState() => WeatherWidgetState();
 }
 
-class WeatherWidgetState extends State<WeatherWidget>
-    with WidgetsBindingObserver {
+class WeatherWidgetState extends State<WeatherWidget> {
   WeatherStatus? status;
   ColorThemeSetter currentTheme = sunnyTheme;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) async {
-    await initializeWeatherStatus();
-  }
-
-  @override
-  void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
   }
 
   Future<void> initializeWeatherStatus() async {
@@ -50,11 +37,12 @@ class WeatherWidgetState extends State<WeatherWidget>
       print("the statusssss ${status!.weatherDescription}");
     });
 
-    if (status!.h24Forecast[0].date.hour >= 6) {
-      currentTheme = nightTheme;
-    } else if (status!.icon.contains("cloudy")) {
-      currentTheme = cloudyTheme;
-    }
+    // if (status!.h24Forecast[0].date.hour >= 6) {
+    //   currentTheme = nightTheme;
+    // } else if (status!.icon.contains("cloudy")) {
+    //   currentTheme = cloudyTheme;
+    // }
+    currentTheme = nightTheme;
   }
 
   bool isCityBookmarked(String city) {

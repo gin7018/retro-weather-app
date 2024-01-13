@@ -4,11 +4,13 @@ weather application (android/ios) but retro style
 
 ## main weather page
 
-![Alt text](<Screenshot 2024-01-12 105657.png>)
+<img src="mainweatherpage.png" alt="Alt text" width="200" height="450">
 
 ## city search page
 
-![Alt text](<Screenshot 2024-01-12 105810.png>)
+<img src="searchpage.png" alt="Alt text" width="200" height="450">
+
+## 3 different themes
 
 ## APIs used
 
